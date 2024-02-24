@@ -50,7 +50,8 @@ class PeekAndPopChild extends StatefulWidget {
   }
 }
 
-class PeekAndPopChildState extends State<PeekAndPopChild> with SingleTickerProviderStateMixin {
+class PeekAndPopChildState extends State<PeekAndPopChild>
+    with SingleTickerProviderStateMixin {
   final PeekAndPopControllerState _peekAndPopController;
 
   final Rect overlapRect;
@@ -58,8 +59,10 @@ class PeekAndPopChildState extends State<PeekAndPopChild> with SingleTickerProvi
 
   final GlobalKey<HelperState> helper = GlobalKey<HelperState>();
 
-  final GlobalKey<QuickActionsState> quickActions = GlobalKey<QuickActionsState>();
-  final GlobalKey<SnapControllerState> snapController = GlobalKey<SnapControllerState>();
+  final GlobalKey<QuickActionsState> quickActions =
+      GlobalKey<QuickActionsState>();
+  final GlobalKey<SnapControllerState> snapController =
+      GlobalKey<SnapControllerState>();
   final GlobalKey view = GlobalKey();
   final GlobalKey bound = GlobalKey();
   double quickActionsLowerLimit = -1.0;
@@ -85,12 +88,16 @@ class PeekAndPopChildState extends State<PeekAndPopChild> with SingleTickerProvi
 
   bool backdropFilterIsVisible = true;
   bool get showBackdropFilter {
-    return !isPeeking && !_peekAndPopController.willBeDone && !_peekAndPopController.isDone && _peekAndPopController.stage != Stage.None;
+    return !isPeeking &&
+        !_peekAndPopController.willBeDone &&
+        !_peekAndPopController.isDone &&
+        _peekAndPopController.stage != Stage.None;
   }
 
   bool blurSnapshotIsVisible = true;
   bool get showBlurSnapshot {
-    return !_peekAndPopController.isDone && _peekAndPopController.stage != Stage.None;
+    return !_peekAndPopController.isDone &&
+        _peekAndPopController.stage != Stage.None;
   }
 
   bool blurIsReady = false;
@@ -128,7 +135,8 @@ class PeekAndPopChildState extends State<PeekAndPopChild> with SingleTickerProvi
   }
 
   void updateBlurTrackerNotifier() {
-    if (backdropFilterIsVisible != showBackdropFilter || blurSnapshotIsVisible != showBlurSnapshot) blurTrackerNotifier.value++;
+    if (backdropFilterIsVisible != showBackdropFilter ||
+        blurSnapshotIsVisible != showBlurSnapshot) blurTrackerNotifier.value++;
   }
 
   void blurReady(Duration duration) {
@@ -146,7 +154,8 @@ class PeekAndPopChildState extends State<PeekAndPopChild> with SingleTickerProvi
   }
 
   bool willUpdatePeekAndPop(PeekAndPopControllerState _peekAndPopController) {
-    if (animationController.isAnimating || animationController.value != 1.0) return true;
+    if (animationController.isAnimating || animationController.value != 1.0)
+      return true;
     if (snapController.currentState == null) return true;
     if (quickActionsLowerLimit == -1) return true;
 
@@ -154,11 +163,13 @@ class PeekAndPopChildState extends State<PeekAndPopChild> with SingleTickerProvi
   }
 
   bool willCancelPeekAndPop(PeekAndPopControllerState _peekAndPopController) {
-    if (animationController.isAnimating || animationController.value != 1.0) return true;
+    if (animationController.isAnimating || animationController.value != 1.0)
+      return true;
     if (snapController.currentState == null) return true;
     if (quickActionsLowerLimit == -1) return true;
 
-    if (snapController.currentState.isMoved(quickActionsLowerLimit)) return false;
+    if (snapController.currentState.isMoved(quickActionsLowerLimit))
+      return false;
     if (snapController.currentState.isMoved(quickActionsLowerLimit / 2.0)) {
       moveAndCancel();
       return false;
@@ -167,17 +178,20 @@ class PeekAndPopChildState extends State<PeekAndPopChild> with SingleTickerProvi
   }
 
   void moveAndCancel() {
-    Future.wait([snapController.currentState.move(const Offset(0.0, 0.0))]).then((_) {
-      _peekAndPopController.cancelPeekAndPop(null);
+    Future.wait([snapController.currentState.move(const Offset(0.0, 0.0))])
+        .then((_) {
+      _peekAndPopController.cancelPeekAndPop();
     });
   }
 
   bool willFinishPeekAndPop(PeekAndPopControllerState _peekAndPopController) {
-    if (animationController.isAnimating || animationController.value != 1.0) return true;
+    if (animationController.isAnimating || animationController.value != 1.0)
+      return true;
     if (snapController.currentState == null) return true;
     if (quickActionsLowerLimit == -1) return true;
 
-    if (snapController.currentState.isMoved(quickActionsLowerLimit)) return false;
+    if (snapController.currentState.isMoved(quickActionsLowerLimit))
+      return false;
     snapController.currentState.move(Offset.zero);
     return true;
   }
@@ -197,20 +211,26 @@ class PeekAndPopChildState extends State<PeekAndPopChild> with SingleTickerProvi
     double quickActionsHeight = quickActions.currentState.getHeight();
     RenderBox viewRenderBox = view.currentContext.findRenderObject();
     double viewHeight = viewRenderBox.size.height;
-    double paddingHeight = _peekAndPopController.quickActionsData.padding.top + _peekAndPopController.quickActionsData.padding.bottom;
+    double paddingHeight = _peekAndPopController.quickActionsData.padding.top +
+        _peekAndPopController.quickActionsData.padding.bottom;
     double totalHeight = viewHeight + quickActionsHeight + paddingHeight;
     double limitBase = max(-0.1, (totalHeight - height) / viewHeight);
 
     quickActionsUpperLimit = max(100, quickActionsHeight - paddingHeight);
     quickActionsLowerLimit = max(100, quickActionsUpperLimit / 2.0);
 
-    snapController.currentState.snapTargets.add(SnapTarget(Offset(0.0, limitBase), Pivot.topLeft));
-    snapController.currentState.snapTargets.add(SnapTarget(Offset(1.0, limitBase), Pivot.topRight));
-    snapController.currentState.softReset(Offset(0.0, limitBase == -0.1 ? limitBase + 0.1 : limitBase * -1.0), Offset(1.0, 1.0));
+    snapController.currentState.snapTargets
+        .add(SnapTarget(Offset(0.0, limitBase), Pivot.topLeft));
+    snapController.currentState.snapTargets
+        .add(SnapTarget(Offset(1.0, limitBase), Pivot.topRight));
+    snapController.currentState.softReset(
+        Offset(0.0, limitBase == -0.1 ? limitBase + 0.1 : limitBase * -1.0),
+        Offset(1.0, 1.0));
   }
 
   void beginDrag(dynamic pressDetails) {
-    if (animationController.isAnimating || animationController.value != 1.0) return;
+    if (animationController.isAnimating || animationController.value != 1.0)
+      return;
     if (snapController.currentState == null) return;
 
     if (!snapControllerIsReset)
@@ -220,7 +240,8 @@ class PeekAndPopChildState extends State<PeekAndPopChild> with SingleTickerProvi
   }
 
   void updateDrag(dynamic pressDetails) {
-    if (animationController.isAnimating || animationController.value != 1.0) return;
+    if (animationController.isAnimating || animationController.value != 1.0)
+      return;
     if (snapController.currentState == null) return;
 
     if (!snapControllerIsReset)
@@ -230,7 +251,8 @@ class PeekAndPopChildState extends State<PeekAndPopChild> with SingleTickerProvi
   }
 
   void endDrag(dynamic pressDetails) {
-    if (animationController.isAnimating || animationController.value != 1.0) return;
+    if (animationController.isAnimating || animationController.value != 1.0)
+      return;
     if (snapController.currentState == null) return;
 
     if (!snapControllerIsReset)
@@ -240,27 +262,39 @@ class PeekAndPopChildState extends State<PeekAndPopChild> with SingleTickerProvi
   }
 
   void onMove(Offset offset) {
-    if (animationController.isAnimating || animationController.value != 1.0) return;
+    if (animationController.isAnimating || animationController.value != 1.0)
+      return;
     if (snapController.currentState == null) return;
     if (quickActionsLowerLimit == -1) return;
     if (quickActions.currentState == null) return;
     if (quickActionsUpperLimit == -1) return;
 
-    if (offset.dy < quickActionsUpperLimit * -1.0 && quickActions.currentState.animationController.status != AnimationStatus.forward && quickActions.currentState.animationController.status != AnimationStatus.completed && quickActions.currentState.animationController.value != 1) {
+    if (offset.dy < quickActionsUpperLimit * -1.0 &&
+        quickActions.currentState.animationController.status !=
+            AnimationStatus.forward &&
+        quickActions.currentState.animationController.status !=
+            AnimationStatus.completed &&
+        quickActions.currentState.animationController.value != 1) {
       quickActions.currentState.animationController.forward();
-    } else if (offset.dy > quickActionsUpperLimit * -1.0 && quickActions.currentState.animationController.status != AnimationStatus.reverse && quickActions.currentState.animationController.status != AnimationStatus.dismissed && quickActions.currentState.animationController.value != 0) {
+    } else if (offset.dy > quickActionsUpperLimit * -1.0 &&
+        quickActions.currentState.animationController.status !=
+            AnimationStatus.reverse &&
+        quickActions.currentState.animationController.status !=
+            AnimationStatus.dismissed &&
+        quickActions.currentState.animationController.value != 0) {
       quickActions.currentState.animationController.reverse();
     }
   }
 
   void onSnap(Offset offset) {
-    if (animationController.isAnimating || animationController.value != 1.0) return;
+    if (animationController.isAnimating || animationController.value != 1.0)
+      return;
     if (snapController.currentState == null) return;
     if (quickActionsLowerLimit == -1) return;
 
     if (!snapController.currentState.isMoved(quickActionsLowerLimit)) {
       snapController.currentState.move(Offset.zero);
-      _peekAndPopController.cancelPeekAndPop(null);
+      _peekAndPopController.cancelPeekAndPop();
     }
   }
 
@@ -333,7 +367,9 @@ class PeekAndPopChildState extends State<PeekAndPopChild> with SingleTickerProvi
 
   bool canBreakToImage(Map<ByteData, int> map, ByteData byteData) {
     return map.values.toList().indexWhere((int lengthInBytes) {
-          return (byteData.lengthInBytes * 1.0) / (lengthInBytes * 1.0) > 10.0 || (lengthInBytes * 1.0) / byteData.lengthInBytes * 1.0 > 10.0;
+          return (byteData.lengthInBytes * 1.0) / (lengthInBytes * 1.0) >
+                  10.0 ||
+              (lengthInBytes * 1.0) / byteData.lengthInBytes * 1.0 > 10.0;
         }) >
         -1;
   }
@@ -351,18 +387,21 @@ class PeekAndPopChildState extends State<PeekAndPopChild> with SingleTickerProvi
       for (int i = 0; i < loopCount; i++) {
         currentFramecount = frameCount;
         blurTrackerNotifier.value++;
-        while (currentFramecount == frameCount) await Future.delayed(Duration(milliseconds: primaryDelay));
+        while (currentFramecount == frameCount)
+          await Future.delayed(Duration(milliseconds: primaryDelay));
       }
 
       ///A workaround to avoid a Flutter Engine bug that was causing trouble with the optimised blur effect algorithm.
-      RenderRepaintBoundary renderBackground = background.currentContext.findRenderObject();
+      RenderRepaintBoundary renderBackground =
+          background.currentContext.findRenderObject();
       List<ui.Image> images = [];
       Map<ByteData, int> map = Map<ByteData, int>();
       while (shouldContinueToImage(map)) {
         images.add(await renderBackground.toImage(
           pixelRatio: WidgetsBinding.instance.window.devicePixelRatio * 0.1,
         ));
-        ByteData byteData = await images.last.toByteData(format: ImageByteFormat.png);
+        ByteData byteData =
+            await images.last.toByteData(format: ImageByteFormat.png);
         map[byteData] = byteData.lengthInBytes;
         //print(byteData.lengthInBytes);
         if (canBreakToImage(map, byteData)) {
@@ -379,7 +418,8 @@ class PeekAndPopChildState extends State<PeekAndPopChild> with SingleTickerProvi
       for (int i = 0; i < loopCount; i++) {
         currentFramecount = frameCount;
         blurTrackerNotifier.value++;
-        while (currentFramecount == frameCount) await Future.delayed(Duration(milliseconds: primaryDelay));
+        while (currentFramecount == frameCount)
+          await Future.delayed(Duration(milliseconds: primaryDelay));
       }
 
       isPeeking = true;
@@ -393,7 +433,8 @@ class PeekAndPopChildState extends State<PeekAndPopChild> with SingleTickerProvi
       for (int i = 0; i < 2; i++) {
         currentFramecount = frameCount;
         blurTrackerNotifier.value++;
-        while (currentFramecount == frameCount) await Future.delayed(Duration(milliseconds: secondaryDelay));
+        while (currentFramecount == frameCount)
+          await Future.delayed(Duration(milliseconds: secondaryDelay));
       }
 
       while (!isReady) await Future.delayed(const Duration(milliseconds: 1));
@@ -578,10 +619,16 @@ class PeekAndPopChildState extends State<PeekAndPopChild> with SingleTickerProvi
                   child: AnimatedBuilder(
                     animation: _peekAndPopController.primaryAnimationController,
                     builder: (BuildContext context, Widget cachedChild) {
-                      double sigma = willPeek || isPeeking || animationController.isAnimating || animationController.value == 1.0
+                      double sigma = willPeek ||
+                              isPeeking ||
+                              animationController.isAnimating ||
+                              animationController.value == 1.0
                           ? _peekAndPopController.sigma
                           : min(
-                              _peekAndPopController.primaryAnimationController.value / _peekAndPopController.treshold * _peekAndPopController.sigma,
+                              _peekAndPopController
+                                      .primaryAnimationController.value /
+                                  _peekAndPopController.treshold *
+                                  _peekAndPopController.sigma,
                               _peekAndPopController.sigma,
                             );
                       double alpha = sigma / _peekAndPopController.sigma;
@@ -594,7 +641,8 @@ class PeekAndPopChildState extends State<PeekAndPopChild> with SingleTickerProvi
                         ),
                         child: Container(
                           constraints: const BoxConstraints.expand(),
-                          color: _peekAndPopController.backdropColor.withAlpha((alpha * _peekAndPopController.alpha).ceil()),
+                          color: _peekAndPopController.backdropColor.withAlpha(
+                              (alpha * _peekAndPopController.alpha).ceil()),
                         ),
                       );
                     },
@@ -630,7 +678,11 @@ class PeekAndPopChildState extends State<PeekAndPopChild> with SingleTickerProvi
                               ],
                             ),
                       builder: (BuildContext context, Widget cachedChild) {
-                        double opacity = _peekAndPopController.stage == Stage.WillCancel || _peekAndPopController.stage == Stage.IsCancelled ? animationController.value : 1.0;
+                        double opacity = _peekAndPopController.stage ==
+                                    Stage.WillCancel ||
+                                _peekAndPopController.stage == Stage.IsCancelled
+                            ? animationController.value
+                            : 1.0;
                         if (opacity != 1.0) transformBloc.add(opacity);
 
                         return Opacity(
@@ -646,10 +698,14 @@ class PeekAndPopChildState extends State<PeekAndPopChild> with SingleTickerProvi
         ),
         ValueListenableBuilder(
           child: _peekAndPopController.useCache ? wrapper() : null,
-          builder: (BuildContext context, int animationTracker, Widget cachedChild) {
+          builder:
+              (BuildContext context, int animationTracker, Widget cachedChild) {
             SchedulerBinding.instance.addPostFrameCallback(viewReady);
 
-            double scale = _peekAndPopController.peekScale + _peekAndPopController.peekCoefficient * _peekAndPopController.primaryAnimationController.value + _peekAndPopController.secondaryAnimation.value;
+            double scale = _peekAndPopController.peekScale +
+                _peekAndPopController.peekCoefficient *
+                    _peekAndPopController.primaryAnimationController.value +
+                _peekAndPopController.secondaryAnimation.value;
             scale = Tween<double>(
               begin: _peekAndPopController.useOverlap ? 1.0 : 0.0,
               end: scale,
@@ -676,7 +732,9 @@ class PeekAndPopChildState extends State<PeekAndPopChild> with SingleTickerProvi
                     bottom: _overlapRect.bottom,
                     child: Opacity(
                       opacity: opacity,
-                      child: !_peekAndPopController.useCache ? wrapper() : cachedChild,
+                      child: !_peekAndPopController.useCache
+                          ? wrapper()
+                          : cachedChild,
                     ),
                   ),
                 ],
@@ -686,7 +744,8 @@ class PeekAndPopChildState extends State<PeekAndPopChild> with SingleTickerProvi
           valueListenable: animationTrackerNotifier,
         ),
         ValueListenableBuilder(
-          builder: (BuildContext context, int pressRerouted, Widget cachedChild) {
+          builder:
+              (BuildContext context, int pressRerouted, Widget cachedChild) {
             if (pressRerouted == 1) _peekAndPopController.unlockPress();
 
             return IgnorePointer(
@@ -695,20 +754,38 @@ class PeekAndPopChildState extends State<PeekAndPopChild> with SingleTickerProvi
                 behavior: HitTestBehavior.opaque,
                 startPressure: 0,
                 peakPressure: _peekAndPopController.peakPressure,
+                onLongPressStart:
+                    (LongPressStartDetails longPressStartDetails) {
+                  _peekAndPopController.updatePeekAndPop(1,
+                      isFromOverlayEntry: true);
+                  _peekAndPopController.beginDrag(1);
+
+                  _peekAndPopController.finishPeekAndPop(
+                      isFromOverlayEntry: true);
+                },
                 onForcePressStart: (ForcePressDetails forcePressDetails) {
-                  _peekAndPopController.updatePeekAndPop(forcePressDetails, isFromOverlayEntry: true);
+                  _peekAndPopController.updatePeekAndPop(forcePressDetails,
+                      isFromOverlayEntry: true);
                   _peekAndPopController.beginDrag(forcePressDetails);
                 },
                 onForcePressUpdate: (ForcePressDetails forcePressDetails) {
-                  _peekAndPopController.updatePeekAndPop(forcePressDetails, isFromOverlayEntry: true);
+                  _peekAndPopController.updatePeekAndPop(forcePressDetails,
+                      isFromOverlayEntry: true);
                   _peekAndPopController.updateDrag(forcePressDetails);
                 },
+                onLongPressEnd: (LongPressEndDetails longPressEndDetails) {
+                  _peekAndPopController.cancelPeekAndPop(
+                      isFromOverlayEntry: true);
+                  _peekAndPopController.endDrag(longPressEndDetails);
+                },
                 onForcePressEnd: (ForcePressDetails forcePressDetails) {
-                  _peekAndPopController.cancelPeekAndPop(forcePressDetails, isFromOverlayEntry: true);
+                  _peekAndPopController.cancelPeekAndPop(
+                      isFromOverlayEntry: true);
                   _peekAndPopController.endDrag(forcePressDetails);
                 },
                 onForcePressPeak: (ForcePressDetails forcePressDetails) {
-                  _peekAndPopController.finishPeekAndPop(forcePressDetails, isFromOverlayEntry: true);
+                  _peekAndPopController.finishPeekAndPop(
+                      isFromOverlayEntry: true);
                 },
                 onVerticalDragStart: (DragStartDetails dragStartDetails) {
                   _peekAndPopController.beginDrag(dragStartDetails);
@@ -786,13 +863,16 @@ class HelperState extends State<Helper> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    SchedulerBinding.instance.addPostFrameCallback(_peekAndPopChild.helperReady);
+    SchedulerBinding.instance
+        .addPostFrameCallback(_peekAndPopChild.helperReady);
 
     return MyAnimatedCrossFade.AnimatedCrossFade(
       duration: const Duration(milliseconds: 111),
       firstChild: firstChild,
       secondChild: secondChild,
-      crossFadeState: stage == 0 ? MyAnimatedCrossFade.CrossFadeState.showFirst : MyAnimatedCrossFade.CrossFadeState.showSecond,
+      crossFadeState: stage == 0
+          ? MyAnimatedCrossFade.CrossFadeState.showFirst
+          : MyAnimatedCrossFade.CrossFadeState.showSecond,
     );
   }
 }
@@ -813,7 +893,8 @@ class QuickActions extends StatefulWidget {
   }
 }
 
-class QuickActionsState extends State<QuickActions> with SingleTickerProviderStateMixin {
+class QuickActionsState extends State<QuickActions>
+    with SingleTickerProviderStateMixin {
   final QuickActionsData quickActionsData;
 
   ///The [AnimationController] used to position the Quick Actions.
@@ -845,7 +926,8 @@ class QuickActionsState extends State<QuickActions> with SingleTickerProviderSta
 
   double getHeight() {
     double height = 0;
-    quickActionsData.quickActions.forEach((QuickAction quickAction) => height += quickAction.height);
+    quickActionsData.quickActions
+        .forEach((QuickAction quickAction) => height += quickAction.height);
     return height;
   }
 
@@ -888,7 +970,9 @@ class QuickActionsState extends State<QuickActions> with SingleTickerProviderSta
               constraints: BoxConstraints.expand(height: getHeight()),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: quickActionsData.quickActions.map((QuickAction quickAction) => wrapper(quickAction)).toList(),
+                children: quickActionsData.quickActions
+                    .map((QuickAction quickAction) => wrapper(quickAction))
+                    .toList(),
               ),
             ),
           ),

@@ -57,7 +57,8 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void showSnackbar() {
-    scaffold.currentState.showSnackBar(SnackBar(content: const Text("Everything works as usual.")));
+    scaffold.currentState.showSnackBar(
+        SnackBar(content: const Text("Everything works as usual.")));
   }
 
   Widget paddingWrapper(Widget child) {
@@ -70,7 +71,8 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget atPeekWrapper(Widget child, PeekAndPopControllerState _peekAndPopController) {
+  Widget atPeekWrapper(
+      Widget child, PeekAndPopControllerState _peekAndPopController) {
     return Container(
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(const Radius.circular(10.0)),
@@ -90,7 +92,8 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  MyNavBar.CupertinoNavigationBar appBar(PeekAndPopControllerState _peekAndPopController) {
+  MyNavBar.CupertinoNavigationBar appBar(
+      PeekAndPopControllerState _peekAndPopController) {
     return MyNavBar.CupertinoNavigationBar(
       key: header,
       backgroundColor: const Color(0xff1B1B1B),
@@ -133,7 +136,8 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget atPopWrapper(Widget child, PeekAndPopControllerState _peekAndPopController) {
+  Widget atPopWrapper(
+      Widget child, PeekAndPopControllerState _peekAndPopController) {
     return Scaffold(
       key: scaffold,
       appBar: appBar(_peekAndPopController),
@@ -185,7 +189,8 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget normalPeekAndPopBuilderAtPeek(BuildContext context, PeekAndPopControllerState _peekAndPopController) {
+  Widget normalPeekAndPopBuilderAtPeek(
+      BuildContext context, PeekAndPopControllerState _peekAndPopController) {
     return atPeekWrapper(
       Image.asset(
         "assets/Scenery.jpeg",
@@ -196,7 +201,8 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget normalPeekAndPopBuilderAtPop(BuildContext context, PeekAndPopControllerState _peekAndPopController) {
+  Widget normalPeekAndPopBuilderAtPop(
+      BuildContext context, PeekAndPopControllerState _peekAndPopController) {
     return atPopWrapper(
       Transform.translate(
         offset: Offset(0, -50),
@@ -210,35 +216,58 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget platformViewPeekAndPopBuilder(BuildContext context, PeekAndPopControllerState _peekAndPopController) {
+  Widget platformViewPeekAndPopBuilder(
+      BuildContext context, PeekAndPopControllerState _peekAndPopController) {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: (_peekAndPopController.willBeDone || _peekAndPopController.isDone) ? null : const BorderRadius.all(const Radius.circular(10.0)),
-        boxShadow: (_peekAndPopController.willBeDone || _peekAndPopController.isDone)
-            ? null
-            : [
-                const BoxShadow(
-                  color: Colors.black,
-                  offset: const Offset(0, 15),
-                  spreadRadius: -5,
-                  blurRadius: 20,
-                ),
-              ],
+        borderRadius:
+            (_peekAndPopController.willBeDone || _peekAndPopController.isDone)
+                ? null
+                : const BorderRadius.all(const Radius.circular(10.0)),
+        boxShadow:
+            (_peekAndPopController.willBeDone || _peekAndPopController.isDone)
+                ? null
+                : [
+                    const BoxShadow(
+                      color: Colors.black,
+                      offset: const Offset(0, 15),
+                      spreadRadius: -5,
+                      blurRadius: 20,
+                    ),
+                  ],
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.all((_peekAndPopController.willBeDone || _peekAndPopController.isDone) ? const Radius.circular(0.0) : const Radius.circular(10.0)),
+        borderRadius: BorderRadius.all(
+            (_peekAndPopController.willBeDone || _peekAndPopController.isDone)
+                ? const Radius.circular(0.0)
+                : const Radius.circular(10.0)),
         child: Scaffold(
           key: scaffold,
-          appBar: (_peekAndPopController.willBeDone || _peekAndPopController.isDone) ? appBar(_peekAndPopController) : null,
+          appBar:
+              (_peekAndPopController.willBeDone || _peekAndPopController.isDone)
+                  ? appBar(_peekAndPopController)
+                  : null,
           body: SizedBox.expand(
-            child: (peekAndPopController.stage == Stage.IsPeeking || _peekAndPopController.willBeDone || peekAndPopController.isDone) && DateTime.now().difference(_peekAndPopController.pushTime).inSeconds > 1 ? InAppBrowser("https://flutter.dev") : peekAndPopController.stage == Stage.WillCancel || peekAndPopController.stage == Stage.IsCancelled ? Container() : const Center(child: const CupertinoActivityIndicator()),
+            child: (peekAndPopController.stage == Stage.IsPeeking ||
+                        _peekAndPopController.willBeDone ||
+                        peekAndPopController.isDone) &&
+                    DateTime.now()
+                            .difference(_peekAndPopController.pushTime)
+                            .inSeconds >
+                        1
+                ? InAppBrowser("https://flutter.dev")
+                : peekAndPopController.stage == Stage.WillCancel ||
+                        peekAndPopController.stage == Stage.IsCancelled
+                    ? Container()
+                    : const Center(child: const CupertinoActivityIndicator()),
           ),
         ),
       ),
     );
   }
 
-  Widget specialPeekAndPopBuilder(BuildContext context, PeekAndPopControllerState _peekAndPopController) {
+  Widget specialPeekAndPopBuilder(
+      BuildContext context, PeekAndPopControllerState _peekAndPopController) {
     if (_peekAndPopController.willBeDone || _peekAndPopController.isDone)
       return atPopWrapper(
         Transform.translate(
@@ -262,7 +291,8 @@ class _MyHomePageState extends State<MyHomePage> {
       );
   }
 
-  Widget gridPeekAndPopBuilderAtPeek(int index, BuildContext context, PeekAndPopControllerState _peekAndPopController) {
+  Widget gridPeekAndPopBuilderAtPeek(int index, BuildContext context,
+      PeekAndPopControllerState _peekAndPopController) {
     return atPeekWrapper(
       Image.asset(
         "assets/" + index.toString() + ".jpeg",
@@ -273,7 +303,8 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget gridPeekAndPopBuilderAtPop(int index, BuildContext context, PeekAndPopControllerState _peekAndPopController) {
+  Widget gridPeekAndPopBuilderAtPop(int index, BuildContext context,
+      PeekAndPopControllerState _peekAndPopController) {
     return atPopWrapper(
       Transform.translate(
         offset: Offset(0, -50),
@@ -287,7 +318,8 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  QuickActionsData moveableQuickActionsBuilder(PeekAndPopControllerState _peekAndPopController) {
+  QuickActionsData moveableQuickActionsBuilder(
+      PeekAndPopControllerState _peekAndPopController) {
     return QuickActionsData(
       const EdgeInsets.only(left: 12.5, top: 25, right: 12.5, bottom: 25),
       const BorderRadius.all(const Radius.circular(10.0)),
@@ -295,9 +327,14 @@ class _MyHomePageState extends State<MyHomePage> {
         QuickAction(
           60,
           () {
-            _peekAndPopController.peekAndPopChild.quickActions.currentState.animationController.reverse();
-            Future.wait([_peekAndPopController.peekAndPopChild.snapController.currentState.move(const Offset(0.0, 0.0))]).then((_) {
-              _peekAndPopController.finishPeekAndPop(null);
+            _peekAndPopController
+                .peekAndPopChild.quickActions.currentState.animationController
+                .reverse();
+            Future.wait([
+              _peekAndPopController.peekAndPopChild.snapController.currentState
+                  .move(const Offset(0.0, 0.0))
+            ]).then((_) {
+              _peekAndPopController.finishPeekAndPop();
             });
           },
           const BoxDecoration(
@@ -350,9 +387,14 @@ class _MyHomePageState extends State<MyHomePage> {
         QuickAction(
           60,
           () {
-            _peekAndPopController.peekAndPopChild.quickActions.currentState.animationController.reverse();
-            Future.wait([_peekAndPopController.peekAndPopChild.snapController.currentState.move(const Offset(0.0, 0.0))]).then((_) {
-              _peekAndPopController.cancelPeekAndPop(null);
+            _peekAndPopController
+                .peekAndPopChild.quickActions.currentState.animationController
+                .reverse();
+            Future.wait([
+              _peekAndPopController.peekAndPopChild.snapController.currentState
+                  .move(const Offset(0.0, 0.0))
+            ]).then((_) {
+              _peekAndPopController.cancelPeekAndPop();
             });
           },
           const BoxDecoration(
@@ -381,7 +423,8 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  QuickActionsData gridQuickActionsBuilder(PeekAndPopControllerState _peekAndPopController) {
+  QuickActionsData gridQuickActionsBuilder(
+      PeekAndPopControllerState _peekAndPopController) {
     return QuickActionsData(
       const EdgeInsets.only(left: 12.5, top: 25, right: 12.5, bottom: 25),
       const BorderRadius.all(const Radius.circular(10.0)),
@@ -389,9 +432,14 @@ class _MyHomePageState extends State<MyHomePage> {
         QuickAction(
           60,
           () {
-            _peekAndPopController.peekAndPopChild.quickActions.currentState.animationController.reverse();
-            Future.wait([_peekAndPopController.peekAndPopChild.snapController.currentState.move(const Offset(0.0, 0.0))]).then((_) {
-              _peekAndPopController.finishPeekAndPop(null);
+            _peekAndPopController
+                .peekAndPopChild.quickActions.currentState.animationController
+                .reverse();
+            Future.wait([
+              _peekAndPopController.peekAndPopChild.snapController.currentState
+                  .move(const Offset(0.0, 0.0))
+            ]).then((_) {
+              _peekAndPopController.finishPeekAndPop();
             });
           },
           const BoxDecoration(
@@ -469,9 +517,14 @@ class _MyHomePageState extends State<MyHomePage> {
         QuickAction(
           60,
           () {
-            _peekAndPopController.peekAndPopChild.quickActions.currentState.animationController.reverse();
-            Future.wait([_peekAndPopController.peekAndPopChild.snapController.currentState.move(const Offset(0.0, 0.0))]).then((_) {
-              _peekAndPopController.cancelPeekAndPop(null);
+            _peekAndPopController
+                .peekAndPopChild.quickActions.currentState.animationController
+                .reverse();
+            Future.wait([
+              _peekAndPopController.peekAndPopChild.snapController.currentState
+                  .move(const Offset(0.0, 0.0))
+            ]).then((_) {
+              _peekAndPopController.cancelPeekAndPop();
             });
           },
           const BoxDecoration(
@@ -618,12 +671,19 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                         fit: BoxFit.cover,
                       ),
-                      borderRadius: const BorderRadius.all(const Radius.circular(10.0)),
+                      borderRadius:
+                          const BorderRadius.all(const Radius.circular(10.0)),
                     ),
                   ),
                   true,
-                  peekAndPopBuilderAtPeek: (BuildContext context, PeekAndPopControllerState _peekAndPopController) => gridPeekAndPopBuilderAtPeek(index, context, _peekAndPopController),
-                  peekAndPopBuilderAtPop: (BuildContext context, PeekAndPopControllerState _peekAndPopController) => gridPeekAndPopBuilderAtPop(index, context, _peekAndPopController),
+                  peekAndPopBuilderAtPeek: (BuildContext context,
+                          PeekAndPopControllerState _peekAndPopController) =>
+                      gridPeekAndPopBuilderAtPeek(
+                          index, context, _peekAndPopController),
+                  peekAndPopBuilderAtPop: (BuildContext context,
+                          PeekAndPopControllerState _peekAndPopController) =>
+                      gridPeekAndPopBuilderAtPop(
+                          index, context, _peekAndPopController),
                   quickActionsBuilder: gridQuickActionsBuilder,
                   sigma: 10,
                   backdropColor: Colors.white,
@@ -669,7 +729,8 @@ class InAppBrowserState extends State<InAppBrowser> {
     return WebView(
       initialUrl: url,
       javascriptMode: JavascriptMode.unrestricted,
-      navigationDelegate: (NavigationRequest request) => NavigationDecision.navigate,
+      navigationDelegate: (NavigationRequest request) =>
+          NavigationDecision.navigate,
       onPageFinished: (String url) {},
     );
   }

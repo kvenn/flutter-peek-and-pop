@@ -47,10 +47,10 @@ class PeekAndPopDetector extends StatelessWidget {
               _peekAndPopController.updatePeekAndPop(forcePressDetails);
             },
             onForcePressEnd: (ForcePressDetails forcePressDetails) {
-              _peekAndPopController.cancelPeekAndPop(forcePressDetails);
+              _peekAndPopController.cancelPeekAndPop();
             },
             onForcePressPeak: (ForcePressDetails forcePressDetails) {
-              _peekAndPopController.finishPeekAndPop(forcePressDetails);
+              _peekAndPopController.finishPeekAndPop();
             },
             child: _peekAndPopController.uiChildUseCache ? cachedChild : child,
           ),
